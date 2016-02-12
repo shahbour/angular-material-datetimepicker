@@ -59,7 +59,8 @@
     + '        </div>'
     + '    </md-dialog-content>'
     + '    <md-dialog-actions class="dtp-buttons">'
-    + '            <md-button class="dtp-btn-cancel md-button" ng-click="picker.cancel()"> {{picker.params.cancelText}}</md-button>'
+    + '            <md-button class="dtp-btn-cancel md-button" ng-click="picker.toggleClock()"> {{picker.params.toggleClockText}}</md-button>'
+    //+ '            <md-button class="dtp-btn-cancel md-button" ng-click="picker.cancel()"> {{picker.params.cancelText}}</md-button>'
     + '            <md-button class="dtp-btn-ok md-button" ng-click="picker.ok()"> {{picker.params.okText}}</md-button>'
     + '      </md-dialog-actions>'
     + '</md-dialog>';
@@ -89,12 +90,14 @@
             minDate: '=',
             maxDate: '=',
             shortTime: '=',
+            minutes: '=',
             format: '@',
             cancelText: '@',
             okText: '@',
             lang: '@',
             amText: '@',
-            pmText: '@'
+            pmText: '@',
+            toggleClockText: '@',
           },
           link: function (scope, element, attrs, ngModel) {
             var isOn = false;
@@ -179,10 +182,12 @@
       lang: mdcDatetimePickerDefaultLocale,
       weekStart: 0,
       shortTime: false,
+      minutes: true,
       cancelText: 'Cancel',
       okText: 'OK',
       amText: 'AM',
-      pmText: 'PM'
+      pmText: 'PM',
+      toggleClockText: 'Clock',
     };
 
     this.meridien = 'AM';
@@ -377,15 +382,20 @@
     ok: function () {
       switch (this.currentView) {
         case VIEW_STATES.DATE:
-          if (this.params.time === true) {
-            this.initHours();
+          //if (this.params.time === true) {
+          //  this.initHours();
+          //}
+          //else {
+            this.hide(true);
+          //}
+          break;
+        case VIEW_STATES.HOUR:
+          if (this.params.minutes) {
+            this.initMinutes();
           }
           else {
             this.hide(true);
           }
-          break;
-        case VIEW_STATES.HOUR:
-          this.initMinutes();
           break;
         case VIEW_STATES.MINUTE:
           this.hide(true);
@@ -413,6 +423,31 @@
       }
       else {
         this.hide();
+      }
+    },
+    toggleClock: function() {
+      switch (this.currentView) {
+        case VIEW_STATES.DATE:
+          if (this.params.time) {
+            this.initHours();
+            this.params.toggleClockText = 'Date';
+          }
+          else {
+            this.hide();
+          }
+          break;
+        case VIEW_STATES.HOUR:
+          if (this.params.date) {
+            this.initDate();
+            this.params.toggleClockText = 'Clock';
+          }
+          else {
+            this.hide();
+          }
+          break;
+        //case VIEW_STATES.MINUTE:
+        //  this.initHours();
+        //  break;
       }
     },
     selectMonthBefore: function () {
