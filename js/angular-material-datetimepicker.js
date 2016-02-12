@@ -145,7 +145,6 @@
               }
               options.currentDate = scope.currentDate;
               var locals = {options: options};
-              console.log(scope.clickOutsideToClose);
               $mdDialog.show({
                   template: template,
                   controller: PluginController,
