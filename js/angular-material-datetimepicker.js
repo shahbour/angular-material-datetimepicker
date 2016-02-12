@@ -90,6 +90,8 @@
             maxDate: '=',
             shortTime: '=',
             minutes: '=',
+            clickOutsideToClose: '=',
+            skipHide: '=',
             format: '@',
             cancelText: '@',
             okText: '@',
@@ -109,6 +111,11 @@
                 scope.format = 'HH:mm';
               }
             }
+
+            if(!scope.clickOutsideToClose)
+              scope.clickOutsideToClose = false;
+            if(!scope.skipHide)
+              scope.skipHide = false;
 
             if (angular.isString(scope.currentDate) && scope.currentDate !== '') {
               scope.currentDate = moment(scope.currentDate, scope.format);
@@ -147,7 +154,8 @@
                   parent: angular.element(document.body),
                   bindToController: true,
                   disableParentScroll: false,
-                  clickOutsideToClose: true,
+                  clickOutsideToClose: scope.clickOutsideToClose,
+                  skipHide: scope.skipHide,
                 })
                 .then(function (v) {
                   scope.currentDate = v ? v._d : v;
