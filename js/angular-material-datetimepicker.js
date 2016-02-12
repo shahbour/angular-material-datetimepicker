@@ -839,7 +839,10 @@
             };
 
             if(!picker.params.shortTime) {
-              scope.$watch('picker.meridien', function() {
+              scope.$watch('picker.meridien', function(newValue,oldValue) {
+                if(newValue === oldValue)
+                    return;
+
                 if(!minuteMode) {
                   var points = setDisplayPoints(picker.isPM(), angular.copy(scope.points));
                   scope.points = points;
