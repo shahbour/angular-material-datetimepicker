@@ -59,8 +59,7 @@
     + '        </div>'
     + '    </md-dialog-content>'
     + '    <md-dialog-actions class="dtp-buttons">'
-    + '            <md-button class="dtp-btn-cancel md-button" ng-click="picker.toggleClock()"> {{picker.params.toggleClockText}}</md-button>'
-    //+ '            <md-button class="dtp-btn-cancel md-button" ng-click="picker.cancel()"> {{picker.params.cancelText}}</md-button>'
+    + '            <md-button class="dtp-btn-cancel md-button" ng-if="picker.params.time" ng-click="picker.toggleClock()"> {{picker.params.toggleClockText}}</md-button>'
     + '            <md-button class="dtp-btn-ok md-button" ng-click="picker.ok()"> {{picker.params.okText}}</md-button>'
     + '      </md-dialog-actions>'
     + '</md-dialog>';
@@ -382,12 +381,7 @@
     ok: function () {
       switch (this.currentView) {
         case VIEW_STATES.DATE:
-          //if (this.params.time === true) {
-          //  this.initHours();
-          //}
-          //else {
             this.hide(true);
-          //}
           break;
         case VIEW_STATES.HOUR:
           if (this.params.minutes) {
@@ -400,29 +394,6 @@
         case VIEW_STATES.MINUTE:
           this.hide(true);
           break;
-      }
-    },
-    cancel: function () {
-      if (this.params.time) {
-        switch (this.currentView) {
-          case VIEW_STATES.DATE:
-            this.hide();
-            break;
-          case VIEW_STATES.HOUR:
-            if (this.params.date) {
-              this.initDate();
-            }
-            else {
-              this.hide();
-            }
-            break;
-          case VIEW_STATES.MINUTE:
-            this.initHours();
-            break;
-        }
-      }
-      else {
-        this.hide();
       }
     },
     toggleClock: function() {
@@ -445,9 +416,6 @@
             this.hide();
           }
           break;
-        //case VIEW_STATES.MINUTE:
-        //  this.initHours();
-        //  break;
       }
     },
     selectMonthBefore: function () {
